@@ -8,11 +8,12 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
+#include <math.h>
 
 int getRandom();
 int isPrime(int);
 int randomPrime(int);
-
+int intLog2(int);
 
 int main(int argc, const char * argv[]) {
     int p = randomPrime(255);
@@ -22,7 +23,7 @@ int main(int argc, const char * argv[]) {
     int e = randomPrime(255);
 
 
-    printf("%d", p);
+    printf("%d", intLog2(122));
 }
 
 int getRandom() {
@@ -56,4 +57,14 @@ int randomPrime(int max) {
         }
     }
     return randNum;
+}
+
+int intLog2(int n) {
+    int c = 2;
+    int i = 1;
+    do {
+        c *= 2;
+        i++;
+    } while (c < n);
+    return i;
 }
