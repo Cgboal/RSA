@@ -9,30 +9,32 @@
 #include <stdint.h>
 #include <inttypes.h>
 
-uint8_t getRandom();
-int isPrime(uint8_t);
-uint8_t randomPrime();
+int getRandom();
+int isPrime(int);
+int randomPrime(int);
+
 
 int main(int argc, const char * argv[]) {
-    /*uint8_t p = getRandom();
-    uint8_t q = getRandom();
+    int p = randomPrime(255);
+    int q = randomPrime(255);
     int n = p * q;
     int t = (p - 1) * (q - 1);
-    */
-    uint8_t p = randomPrime();
+    int e = randomPrime(255);
+
+
     printf("%d", p);
 }
 
-uint8_t getRandom() {
+int getRandom() {
     FILE* randSource;
     randSource = fopen("/dev/urandom", "r");
-    uint8_t rand;
-    fread(&rand, 1, sizeof(rand), randSource);
+    int rand;
+    fread(&rand, 1, sizeof(uint8_t), randSource);
     fclose(randSource);
     return rand;
 }
 
-int isPrime(uint8_t n) {
+int isPrime(int n) {
     for (int m = 2; m < n; m++) {
         if (n % m == 0) {
             return 0;
@@ -41,9 +43,12 @@ int isPrime(uint8_t n) {
     return 1;
 }
 
-uint8_t randomPrime() {
+int randomPrime(int max) {
     int i = 0;
-    uint8_t randNum;
+    int randNum;
+    do {
+        randNum = getRandom();
+    } while (randNum > max || randNum <= 0);
     while (i == 0) {
         randNum = getRandom();
         if (isPrime(randNum) > 0) {
