@@ -10,27 +10,27 @@
 #include <inttypes.h>
 #include <math.h>
 
-int getRandom();
+int getRandom(int);
 int isPrime(int);
 int randomPrime(int);
-int intLog2(int);
+int bytesReq(int);
 
 int main(int argc, const char * argv[]) {
-    int p = randomPrime(255);
+    int p = randomPrime(123456);
     int q = randomPrime(255);
     int n = p * q;
     int t = (p - 1) * (q - 1);
     int e = randomPrime(255);
 
 
-    printf("%d", intLog2(122));
+    printf("%d", p);
 }
 
-int getRandom() {
+int getRandom(int size) {
     FILE* randSource;
     randSource = fopen("/dev/urandom", "r");
-    int rand;
-    fread(&rand, 1, sizeof(uint8_t), randSource);
+    int rand = 0;
+    fread(&rand, size, 1, randSource);
     fclose(randSource);
     return rand;
 }
@@ -47,11 +47,12 @@ int isPrime(int n) {
 int randomPrime(int max) {
     int i = 0;
     int randNum;
-    do {
-        randNum = getRandom();
-    } while (randNum > max || randNum <= 0);
+    int size = bytesReq(max);
     while (i == 0) {
-        randNum = getRandom();
+        do {
+            randNum = getRandom(size);
+        } while (randNum > max || randNum <= 0);
+
         if (isPrime(randNum) > 0) {
             i++;
         }
@@ -59,12 +60,16 @@ int randomPrime(int max) {
     return randNum;
 }
 
-int intLog2(int n) {
+int bytesReq(int n) {
     int c = 2;
     int i = 1;
     do {
         c *= 2;
         i++;
     } while (c < n);
-    return i;
+    double bytes = (double)i / 8;
+    if ((int)bytes <= 0) {
+        bytes = 1;
+    }
+    return ceil(bytes);
 }
