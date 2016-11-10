@@ -13,17 +13,26 @@
 int getRandom(int);
 int isPrime(int);
 int randomPrime(int);
+int power(int, int);
 int bytesReq(int);
+int mmi(int, int);
+int modularExponent(int, int, int);
+int encrypt(int, int, int);
+int decrypt(int, int, int);
 
 int main(int argc, const char * argv[]) {
-    int p = randomPrime(123456);
+    int p = randomPrime(255);
     int q = randomPrime(255);
     int n = p * q;
     int t = (p - 1) * (q - 1);
-    int e = randomPrime(255);
+    int e = randomPrime(t);
+    int d = mmi(e, t);
+    int m = 1337;
+    int c = encrypt(m, e, n);
+    int x = decrypt(c, d, n);
 
 
-    printf("%d", p);
+    printf("%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n", p,q,n,t,e,d,m,c,x);
 }
 
 int getRandom(int size) {
@@ -60,6 +69,18 @@ int randomPrime(int max) {
     return randNum;
 }
 
+int power(int b, int e) {
+    int x = 1;
+    while (e) {
+   	if (e & 1) {
+       	    x *= b;
+        }
+       	e >>= 1;
+	b *= b;
+    }
+    return x;
+}
+
 int bytesReq(int n) {
     int c = 2;
     int i = 1;
@@ -72,4 +93,34 @@ int bytesReq(int n) {
         bytes = 1;
     }
     return ceil(bytes);
+}
+
+int mmi(int a, int m) {
+    a = a % m;
+    for (int x = 1; x < m; x++) {
+	if ((a *x) % m == 1) {
+	    return x;
+        }
+    }
+    return 0;
+}
+
+int modularExponent(int b, int e, int m) {
+    int result = 1;
+    while (e > 0 && m != 0) {
+	if (e % 2 == 1) {
+            result = (result * b) % m;
+        }
+        e = e >> 1;
+        b = (b * b) % m;
+    }
+    return result;
+}
+
+int encrypt(int m, int e, int n) {
+    return modularExponent(m, e, n);
+}
+
+int decrypt(int em, int d, int n) {
+    return modularExponent(em, d, n);
 }
