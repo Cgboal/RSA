@@ -13,7 +13,6 @@
 int getRandom(int);
 int isPrime(int);
 int randomPrime(int);
-int power(int, int);
 int bytesReq(int);
 int mmi(int, int);
 int modularExponent(int, int, int);
@@ -31,8 +30,10 @@ int main(int argc, const char * argv[]) {
     int c = encrypt(m, e, n);
     int x = decrypt(c, d, n);
 
-
-    printf("%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n", p,q,n,t,e,d,m,c,x);
+    //<grim>
+    printf("Prime 1 = %d\nPrime 2 = %d\nProduct of Primes = %d\nEulers Totient = %d\n\
+E = %d\nD = %d\nMessage = %d\nCiphertext = %d\nPlaintext = %d\n", p,q,n,t,e,d,m,c,x);
+    //</grim>
 }
 
 int getRandom(int size) {
@@ -69,17 +70,6 @@ int randomPrime(int max) {
     return randNum;
 }
 
-int power(int b, int e) {
-    int x = 1;
-    while (e) {
-   	if (e & 1) {
-       	    x *= b;
-        }
-       	e >>= 1;
-	b *= b;
-    }
-    return x;
-}
 
 int bytesReq(int n) {
     int c = 2;
